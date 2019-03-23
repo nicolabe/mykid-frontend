@@ -1,17 +1,15 @@
 <template>
-  <div class="container">
-    <form v-on:submit.prevent="onSubmit">
-      <label>
-        <span>Mobilnummer</span>
-        <input type="text" v-model="number" />
-      </label>
-      <label>
-        <span>Passord</span>
-        <input type="password" v-model="password" />
-      </label>
-      <button type="submit">Logg inn</button>
-    </form>
-  </div>
+  <form v-on:submit.prevent="onSubmit">
+    <label>
+      <span>Mobilnummer</span>
+      <input type="text" v-model="number" />
+    </label>
+    <label>
+      <span>Passord</span>
+      <input type="password" v-model="password" />
+    </label>
+    <button type="submit">Logg inn</button>
+  </form>
 </template>
 
 <script>
@@ -27,7 +25,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      axios.post("https://mykid.no/forside/forside/my_brukere_logginn", {
+      axios.post("/api/login", {
         mykid_username: "40469957",
         mykid_password: "hkbsb4"
       }).then(response => console.log(response))
@@ -38,9 +36,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .container {
-
-  }
 
   form {
     display: flex;
@@ -54,9 +49,10 @@ export default {
       justify-content: flex-start;
       align-items: flex-start;
       padding-bottom: 12px;
+      color: #333;
 
       span {
-        font-weight: bold;
+        font-weight: 300;
         padding-bottom: 4px;
       }
     }
