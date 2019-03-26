@@ -1,17 +1,37 @@
 <template>
   <div id="app">
     <h1>Mykid</h1>
-    <Login/>
+    <Login v-if="!user" v-on:setUser="setUser" />
+    <MyDay v-if="user" />
   </div>
 </template>
 
 <script>
 import Login from './components/Login.vue'
+import MyDay from './components/MyDay.vue'
+import Vue from 'vue'
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 
 export default {
   name: 'app',
   components: {
-    Login
+    Login,
+    MyDay
+  },
+  data: function() {
+    return {
+      user: null
+    }
+  },
+  methods: {
+    setUser(user) {
+      this.user = user;
+      $cookies.set("mykid_login", user, 60*60*24*30, "/");
+    }
+  },
+  created() {
+    this.user = $cookies.get("mykid_login");
   }
 }
 </script>

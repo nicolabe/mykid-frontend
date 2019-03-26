@@ -27,8 +27,11 @@ export default {
     onSubmit() {
       axios.post("/api/login", {
         mykid_username: "40469957",
-        mykid_password: "hkbsb4"
-      }).then(response => console.log(response))
+        mykid_password: "hkbsb4",
+        mykid_submit: "Logg inn"
+      }).then(response => {
+        this.$emit("setUser", this.number)
+      })
     }
   }
 }
