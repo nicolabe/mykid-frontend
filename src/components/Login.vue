@@ -8,7 +8,7 @@
       <span>Passord</span>
       <input type="password" v-model="password" />
     </label>
-    <button type="submit">Logg inn</button>
+    <button :disabled="loading" type="submit">Logg inn</button>
   </form>
 </template>
 
@@ -20,17 +20,20 @@ export default {
   data: function() {
     return {
       number: "",
-      password: ""
+      password: "",
+      loading: true
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true;
       axios.post("/api/login", {
         mykid_username: "40469957",
         mykid_password: "hkbsb4",
         mykid_submit: "Logg inn"
       }).then(response => {
-        this.$emit("setUser", this.number)
+        this.loading = false;
+        this.$emit("setUser", response.data.user);
       })
     }
   }

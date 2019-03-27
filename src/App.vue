@@ -1,37 +1,57 @@
 <template>
   <div id="app">
+    <Navbar
+      v-bind:parent="parent"
+      v-on:logout="logout"
+    />
     <h1>Mykid</h1>
-    <Login v-if="!user" v-on:setUser="setUser" />
-    <MyDay v-if="user" />
+    <Login v-if="!parent" v-on:setUser="setUser" />
+    <MyDay
+      v-if="parent"
+      v-bind:parent="parent"
+      v-bind:child="child"
+    />
   </div>
 </template>
 
 <script>
 import Login from './components/Login.vue'
 import MyDay from './components/MyDay.vue'
-import Vue from 'vue'
-import VueCookies from 'vue-cookies'
-Vue.use(VueCookies)
+import Navbar from './components/Navbar.vue'
+
+const MYKID_COOKIE = "mykid_login";
 
 export default {
   name: 'app',
   components: {
     Login,
-    MyDay
+    MyDay,
+    Navbar
   },
   data: function() {
     return {
-      user: null
+      parent: null,
+      child: null
     }
   },
   methods: {
-    setUser(user) {
-      this.user = user;
-      $cookies.set("mykid_login", user, 60*60*24*30, "/");
+    setUser(userData) {
+      this.parent = userData.parent;
+      this.child = userData.child;
+      $cookies.set(MYKID_COOKIE, userData, 60*60*24*30, "/");
+    },
+    logout() {
+      this.parent = null;
+      this.child = null;
+      $cookies.remove(MYKID_COOKIE)
     }
   },
   created() {
-    this.user = $cookies.get("mykid_login");
+    const cookieData = $cookies.get(MYKID_COOKIE);
+    if (cookieData) {
+      this.parent = cookieData.parent;
+      this.child = cookieData.child;
+    }
   }
 }
 </script>
@@ -41,10 +61,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  border: 2px solid #ccc;
-  padding: 32px 0;
-  width: 75%;
-  margin: auto;
 
   h1 {
     text-transform: uppercase;
