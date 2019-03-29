@@ -1,27 +1,34 @@
 <template>
-  <form v-on:submit.prevent="onSubmit">
-    <label>
-      <span>Mobilnummer</span>
-      <input type="text" v-model="number" />
-    </label>
-    <label>
-      <span>Passord</span>
-      <input type="password" v-model="password" />
-    </label>
-    <button :disabled="loading" type="submit">Logg inn</button>
-  </form>
+  <div class="loginContainer">
+    <form v-on:submit.prevent="onSubmit" v-bind:class="{isLoading: loading}">
+      <label>
+        <span>Mobilnummer</span>
+        <input type="text" v-model="number" />
+      </label>
+      <label>
+        <span>Passord</span>
+        <input type="password" v-model="password" />
+      </label>
+      <button class="btn btn-primary" :disabled="loading" type="submit">Logg inn</button>
+    </form>
+    <pacman-loader :loading="loading" color="#007bff" class="centerPosition" />
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import PacmanLoader from 'vue-spinner/src/PacmanLoader.vue'
 
 export default {
   name: 'Login',
+  components: {
+    PacmanLoader
+  },
   data: function() {
     return {
       number: "",
       password: "",
-      loading: true
+      loading: false
     }
   },
   methods: {
@@ -62,25 +69,19 @@ export default {
         padding-bottom: 4px;
       }
     }
+  }
 
-    button {
-        background-color: #2196f3;
-        color: #fff;
-        padding: 6px 16px;
-        min-width: 64px;
-        transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-        line-height: 1.75;
-        font-weight: 500;
-        border-radius: 4px;
-        text-transform: uppercase;
-        letter-spacing: 0.02857em;
-        box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12);
-        border: 0;
-        cursor: pointer;
+  .isLoading {
+    opacity: 0.5;
+  }
 
-        &:hover {
-          background-color: #1976d2;
-        }
-      }
+  .loginContainer {
+    position: relative;
+  }
+
+  .centerPosition {
+    position: absolute !important;
+    top: 50px;
+    left: 45%;
   }
 </style>
