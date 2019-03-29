@@ -4,12 +4,19 @@
       v-bind:parent="parent"
       v-on:logout="logout"
     />
+    <div class="alert alert-danger" v-if="errorMsg" role="alert">
+      {{errorMsg}}
+    </div>
     <h1>Mykid</h1>
-    <Login v-if="!parent" v-on:setUser="setUser" />
+    <Login
+      v-if="!parent" v-on:setUser="setUser"
+      v-on:error="onError"
+    />
     <MyDay
       v-if="parent"
       v-bind:parent="parent"
       v-bind:child="child"
+      v-on:error="onError"
     />
   </div>
 </template>
@@ -31,7 +38,8 @@ export default {
   data: function() {
     return {
       parent: null,
-      child: null
+      child: null,
+      errorMsg: null
     }
   },
   methods: {
@@ -43,7 +51,11 @@ export default {
     logout() {
       this.parent = null;
       this.child = null;
+      this.errorMsg = null;
       $cookies.remove(MYKID_COOKIE)
+    },
+    onError(errorMsg) {
+      this.errorMsg = errorMsg;
     }
   },
   created() {
@@ -65,6 +77,16 @@ export default {
   h1 {
     text-transform: uppercase;
     font-size: 24px;
+    color: #333;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.01562em;
+    padding-bottom: 12px;
+  }
+
+  h2 {
+    text-transform: uppercase;
+    font-size: 20px;
     color: #333;
     font-weight: 300;
     line-height: 1;

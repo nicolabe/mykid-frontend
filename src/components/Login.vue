@@ -41,6 +41,9 @@ export default {
       }).then(response => {
         this.loading = false;
         this.$emit("setUser", response.data.user);
+      }).catch(error  => {
+        this.loading = false;
+        this.$emit("error", error);
       })
     }
   }

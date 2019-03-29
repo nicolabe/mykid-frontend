@@ -2,7 +2,7 @@
   <nav>
     <ul>
       <li v-if="parent">
-        <a href="#" v-on:click="logout">Log out</a>
+        <a href="#" v-on:click="logout">Logg ut</a>
       </li>
     </ul>
   </nav>
@@ -25,15 +25,26 @@ export default {
   nav {
     display: flex;
     justify-content: flex-end;
-    padding-right: 16px;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #417977;
+    margin-bottom: 12px;
+    min-height: 40px;
   }
 
   ul {
     list-style: none;
+    margin-bottom: 0;
   }
 
   a {
     cursor: pointer;
+    color: white;
+
+    &:hover {
+      color: white;
+      text-decoration: none;
+    }
   }
 </style>
 
