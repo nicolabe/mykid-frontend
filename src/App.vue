@@ -1,56 +1,57 @@
 <template>
   <div id="app">
     <Navbar
-      v-bind:parent="parent"
+      v-bind:user="user"
       v-on:logout="logout"
     />
     <div class="alert alert-danger" v-if="errorMsg" role="alert">
       {{errorMsg}}
     </div>
-    <h1>Mykid</h1>
     <Login
-      v-if="!parent" v-on:setUser="setUser"
+      v-if="!user" v-on:setUser="setUser"
       v-on:error="onError"
     />
-    <MyDay
-      v-if="parent"
-      v-bind:parent="parent"
-      v-bind:child="child"
-      v-on:error="onError"
-    />
+    <div v-if="children.length > 0">
+      <h2>Dine barn</h2>
+      <div class="child-wrapper" v-for="child in children" v-bind:key="child.id">
+        <Child v-bind:child="child" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Login from './components/Login.vue'
-import MyDay from './components/MyDay.vue'
 import Navbar from './components/Navbar.vue'
+import Child from './components/Child.vue'
 
-const MYKID_COOKIE = "mykid_login";
+import axios from "axios"
+
+const MYKID_COOKIE = "mykid";
 
 export default {
   name: 'app',
   components: {
     Login,
-    MyDay,
+    Child,
     Navbar
   },
   data: function() {
     return {
-      parent: null,
-      child: null,
+      user: null,
+      children: [],
       errorMsg: null
     }
   },
   methods: {
-    setUser(userData) {
-      this.parent = userData.parent;
-      this.child = userData.child;
-      $cookies.set(MYKID_COOKIE, userData, 60*60*24*30, "/");
+    setUser(data) {
+      this.user = data;
+      const jsonData = JSON.stringify(Object.assign({}, data));
+      $cookies.set(MYKID_COOKIE, jsonData, 60*60*24*30, "/");
     },
     logout() {
-      this.parent = null;
-      this.child = null;
+      this.user = null;
+      this.children = [];
       this.errorMsg = null;
       $cookies.remove(MYKID_COOKIE)
     },
@@ -61,8 +62,19 @@ export default {
   created() {
     const cookieData = $cookies.get(MYKID_COOKIE);
     if (cookieData) {
-      this.parent = cookieData.parent;
-      this.child = cookieData.child;
+      this.user = cookieData;
+    }
+  },
+  watch: {
+    user: function(newVal, oldVal) {
+      if (newVal && oldVal === null) {
+        axios.get("/api/children")
+          .then(res => {
+            this.children = res.data
+            console.log(this.children)
+          })
+          .catch(err => this.errorMsg = err)
+      }
     }
   }
 }
@@ -74,25 +86,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 
-  h1 {
-    text-transform: uppercase;
-    font-size: 24px;
-    color: #333;
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -0.01562em;
-    padding-bottom: 12px;
-  }
-
   h2 {
     text-transform: uppercase;
     font-size: 20px;
     color: #333;
-    font-weight: 300;
     line-height: 1;
     letter-spacing: -0.01562em;
     padding-bottom: 12px;
   }
+}
+
+.child-wrapper {
+  display: flex;
 }
 
 body {

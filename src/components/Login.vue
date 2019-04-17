@@ -35,9 +35,10 @@ export default {
     onSubmit() {
       this.loading = true;
       axios.post("/api/login", {
-        mykid_username: "40469957",
-        mykid_password: "hkbsb4",
-        mykid_submit: "Logg inn"
+        country_code: "+47",
+        mobile: "40469957",
+        password: "hkbsb4",
+        v: "1.6.7+"
       }).then(response => {
         this.loading = false;
         this.$emit("setUser", response.data.user);

@@ -1,7 +1,8 @@
 <template>
   <nav>
+    <h1>Mykid</h1>
     <ul>
-      <li v-if="parent">
+      <li v-if="user">
         <a href="#" v-on:click="logout">Logg ut</a>
       </li>
     </ul>
@@ -11,7 +12,7 @@
 <script>
 export default {
   props: {
-    parent: String
+    user: Object
   },
   methods: {
     logout() {
@@ -22,13 +23,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  h1 {
+    color: white;
+    text-transform: uppercase;
+    font-size: 24px;
+  }
+
   nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
     background-color: #417977;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
     min-height: 40px;
   }
 
