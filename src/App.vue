@@ -71,7 +71,6 @@ export default {
         axios.get("/api/children")
           .then(res => {
             this.children = res.data
-            console.log(this.children)
           })
           .catch(err => this.errorMsg = err)
       }
