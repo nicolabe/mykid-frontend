@@ -48,7 +48,6 @@ export default {
 
   .child-container {
     flex: 1;
-    border: 2px solid #ccc;
     margin: 20px;
     padding: 20px;
   }
@@ -56,6 +55,7 @@ export default {
   .child-info {
     display: flex;
     flex-direction: column;
+    flex: 1;
   }
 
 </style>

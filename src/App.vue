@@ -11,8 +11,7 @@
       v-if="!user" v-on:setUser="setUser"
       v-on:error="onError"
     />
-    <div v-if="children.length > 0">
-      <h2>Dine barn</h2>
+    <div v-if="children.length > 0" class="child-container">
       <div class="child-wrapper" v-for="child in children" v-bind:key="child.id">
         <Child v-bind:child="child" />
       </div>
@@ -69,9 +68,7 @@ export default {
     user: function(newVal, oldVal) {
       if (newVal && oldVal === null) {
         axios.get("/api/children")
-          .then(res => {
-            this.children = res.data
-          })
+          .then(res => this.children = res.data)
           .catch(err => this.errorMsg = err)
       }
     }
@@ -95,8 +92,13 @@ export default {
   }
 }
 
-.child-wrapper {
+.child-container {
   display: flex;
+
+}
+
+.child-wrapper {
+  flex: 1;
 }
 
 body {
