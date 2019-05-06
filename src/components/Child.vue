@@ -31,9 +31,11 @@ export default {
     }
   },
   async created() {
+    const date = new Date()
     const { data } = await axios.get("/api/my_day", {
       params: {
-        child_id: this.child.id
+        child_id: this.child.id,
+        date: date.toISOString().substring(0, 10)
     }})
     this.myDay = data;
   }

@@ -16,6 +16,10 @@
         <Child v-bind:child="child" />
       </div>
     </div>
+    <div v-if="plannings.length > 0">
+      Husk planleggingsdager!
+      {{plannings.join(", ")}}
+    </div>
   </div>
 </template>
 
@@ -39,6 +43,7 @@ export default {
     return {
       user: null,
       children: [],
+      plannings: [],
       errorMsg: null
     }
   },
@@ -51,6 +56,7 @@ export default {
     logout() {
       this.user = null;
       this.children = [];
+      this.plannings = [];
       this.errorMsg = null;
       $cookies.remove(MYKID_COOKIE)
     },
@@ -69,6 +75,22 @@ export default {
       if (newVal && oldVal === null) {
         axios.get("/api/children")
           .then(res => this.children = res.data)
+          .catch(err => this.errorMsg = err)
+      }
+    },
+    children: function(newVal, oldVal) {
+      if (newVal.length > 0 && oldVal.length === 0) {
+        const childId = newVal[0].id
+        const date = new Date()
+        axios.get("/api/plannings", {
+          params: {
+            child_id: childId,
+            date: date.toISOString().substring(0, 10)
+          }
+        })
+          .then(res => {
+            this.plannings = res.data.planning_days
+          })
           .catch(err => this.errorMsg = err)
       }
     }
