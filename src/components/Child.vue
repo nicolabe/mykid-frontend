@@ -1,15 +1,18 @@
 <template>
   <div class="child-container">
+    <h1 class="child-header">{{child.name}}</h1>
     <div class="child-info">
-      <p><img v-bind:src="child.img" v-bind:alt="child.name" height="50" width="50"></p>
-      <h4>{{child.name}}</h4>
-      <p>Bursdag: {{child.birthday}}</p>
-      <h4>Avdeling</h4>
-      <p>{{child.department.name}}</p>
-      <p>Telefon: {{child.department.phone}}</p>
-      <div v-if="Object.keys(myDay).length > 0">
-        <MyDay v-bind:myDay="myDay" />
+      <div class="child-name">
+        <img v-bind:src="child.img" v-bind:alt="child.name" height="150" width="150">
       </div>
+      <div class="info-box">
+        <span>Bursdag: {{formatBirthday}}</span>
+        <span>Avdeling: {{child.department.name}}</span>
+        <span>Telefon: {{child.department.phone}}</span>
+      </div>
+    </div>
+    <div class="child-myday" v-if="Object.keys(myDay).length > 0">
+      <MyDay v-bind:myDay="myDay" />
     </div>
   </div>
 </template>
@@ -17,6 +20,7 @@
 <script>
 import axios from "axios"
 import MyDay from "./MyDay.vue"
+import { formatDate } from "../utils/helpers.js"
 
 export default {
   components: {
@@ -28,6 +32,11 @@ export default {
   data: function() {
     return {
       myDay: {}
+    }
+  },
+  computed: {
+    formatBirthday() {
+      return formatDate(this.child.birthday)
     }
   },
   async created() {
@@ -43,21 +52,40 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  h4 {
+  .child-header {
     font-weight: bold;
-    font-size: 22px;
+    font-size: 26px;
+    padding-bottom: 16px;
   }
 
   .child-container {
-    flex: 1;
     margin: 20px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+
   }
 
   .child-info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex: 1;
+    padding-bottom: 20px;
+  }
+
+  .child-name {
+    flex: 1;
+  }
+
+  .info-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #417977;
+    color: white;
+    font-size: 24px;
   }
 
 </style>

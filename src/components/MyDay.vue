@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import {formatDate} from "../utils/helpers.js"
+
 export default {
   name: 'MyDay',
   props: {
@@ -37,7 +39,7 @@ export default {
     },
     today: function() {
       const date = new Date()
-      return date.toISOString().substring(0, 10)
+      return formatDate(date.toISOString().substring(0, 10))
     }
   }
 }
