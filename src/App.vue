@@ -16,9 +16,9 @@
         <Child v-bind:child="child" />
       </div>
     </div>
+
     <div v-if="plannings.length > 0">
-      Husk planleggingsdager!
-      {{plannings.join(", ")}}
+      <PlanningDays v-bind:days="plannings" />
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@
 import Login from './components/Login.vue'
 import Navbar from './components/Navbar.vue'
 import Child from './components/Child.vue'
+import PlanningDays from "./components/PlanningDays.vue"
 
 import axios from "axios"
 
@@ -37,7 +38,8 @@ export default {
   components: {
     Login,
     Child,
-    Navbar
+    Navbar,
+    PlanningDays
   },
   data: function() {
     return {
