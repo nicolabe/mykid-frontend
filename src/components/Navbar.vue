@@ -24,7 +24,7 @@ export default {
 
 <style scoped lang="scss">
   h1 {
-    color: white;
+    color: $invert-text-color;
     text-transform: uppercase;
     font-size: 24px;
   }
@@ -34,7 +34,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
-    background-color: #417977;
+    background-color: $primary-color;
     margin-bottom: 24px;
     min-height: 40px;
   }
@@ -46,10 +46,10 @@ export default {
 
   a {
     cursor: pointer;
-    color: white;
+    color: $invert-text-color;
 
     &:hover {
-      color: white;
+      color: $invert-text-color;
       text-decoration: none;
     }
   }

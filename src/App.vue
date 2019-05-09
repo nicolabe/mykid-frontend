@@ -109,7 +109,7 @@ export default {
   h2 {
     text-transform: uppercase;
     font-size: 20px;
-    color: #333;
+    color: $text-color;
     line-height: 1;
     letter-spacing: -0.01562em;
     padding-bottom: 12px;

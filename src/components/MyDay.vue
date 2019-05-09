@@ -58,7 +58,7 @@ export default {
   }
 
   .my-day {
-    border: 2px solid #417977;
+    border: 2px solid $primary-color;
     padding: 22px;
   }
 

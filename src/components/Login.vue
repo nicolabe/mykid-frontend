@@ -66,7 +66,7 @@ export default {
       justify-content: flex-start;
       align-items: flex-start;
       padding-bottom: 12px;
-      color: #333;
+      color: $text-color;
 
       span {
         font-weight: 300;

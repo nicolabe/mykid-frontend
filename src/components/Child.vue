@@ -56,6 +56,7 @@ export default {
     font-weight: bold;
     font-size: 26px;
     padding-bottom: 16px;
+    text-transform: uppercase;
   }
 
   .child-container {
@@ -83,8 +84,8 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #417977;
-    color: white;
+    background-color: $primary-color;
+    color: $invert-text-color;
     font-size: 24px;
   }
 
