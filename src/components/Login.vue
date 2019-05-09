@@ -36,8 +36,8 @@ export default {
       this.loading = true;
       axios.post("/api/login", {
         country_code: "+47",
-        mobile: "40469957",
-        password: "hkbsb4",
+        mobile: this.number,
+        password: this.password,
         v: "1.6.7+"
       }).then(response => {
         this.loading = false;
