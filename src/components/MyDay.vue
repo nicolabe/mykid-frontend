@@ -24,35 +24,52 @@
 import { formatDate } from "../utils/helpers.js"
 import { isToday } from "../utils/helpers.js"
 
+import axios from "axios";
+
 export default {
   name: 'MyDay',
   props: {
-    myDay: Object
+    myDay: Object,
+    childId: String
   },
   methods: {
     previousDay() {
-      console.log("get previous day");
-      console.log(this.myDay)
-      console.log(isToday(this.myDay.date))
+      const previousDay = new Date(this.myDay.date)
+      previousDay.setDate(previousDay.getDate() - 1)
+      this.getDay(previousDay)
     },
     nextDay() {
       if (this.isToday) {
         return;
       }
-      console.log("get next day");
+      const nextDay = new Date(this.myDay.date)
+      nextDay.setDate(nextDay.getDate() + 1)
+      this.getDay(nextDay)
+    },
+    async getDay(date) {
+      const { data } = await axios.get("/api/my_day", {
+      params: {
+        child_id: this.childId,
+        date: date.toISOString().substring(0, 10)
+      }})
+      this.$emit("changeDay", data)
     }
   },
   computed: {
     sleepMessage: function() {
       const message = this.myDay.daily_messages.filter(message => message.msg_type === "sleep")[0];
-      return message.content;
+      if (message) {
+        return message.content;
+      } else {
+        return "";
+      }
     },
     dailyMessage: function() {
       const messages = this.myDay.daily_messages.filter(message => message.msg_type === "daily")
       return messages.map(message => message.content.replace(/(<([^>]+)>)/ig,"").replace(/&nbsp;/g, ' ')).join(", ")
     },
     today: function() {
-      const date = new Date()
+      const date = new Date(this.myDay.date)
       return formatDate(date.toISOString().substring(0, 10))
     },
     isToday: function() {
@@ -70,6 +87,7 @@ export default {
 
     a {
       cursor: pointer;
+      font-weight: bold;
     }
   }
 
@@ -89,6 +107,6 @@ export default {
 
   .disabled {
     color: #bbb !important;
-    cursor: default !important;
+    cursor: not-allowed !important;
   }
 </style>

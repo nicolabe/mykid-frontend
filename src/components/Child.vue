@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="child-myday" v-if="Object.keys(myDay).length > 0">
-      <MyDay v-bind:myDay="myDay" />
+      <MyDay v-on:changeDay="changeDay" v-bind:myDay="myDay" v-bind:childId="child.id" />
     </div>
   </div>
 </template>
@@ -32,6 +32,11 @@ export default {
   data: function() {
     return {
       myDay: {}
+    }
+  },
+  methods: {
+    changeDay(day) {
+      this.myDay = day
     }
   },
   computed: {
