@@ -77,6 +77,10 @@ export default {
     flex-direction: row;
     flex: 1;
     padding-bottom: 20px;
+
+    @media (max-width: $mobile-size) {
+      flex-direction: column;
+    }
   }
 
   .child-name {
