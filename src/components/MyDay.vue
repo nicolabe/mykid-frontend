@@ -17,17 +17,22 @@
       <p>Levert: {{myDay.pickup.arrived_at.substring(11,16)}}</p>
       <p v-if="myDay.pickup.left_at">Hentet: {{myDay.pickup.left_at.substring(11,16)}}</p>
     </div>
+    <DailyPhotos v-bind:photos="myDay.photos" />
   </div>
 </template>
 
 <script>
 import { formatDate } from "../utils/helpers.js"
 import { isToday } from "../utils/helpers.js"
+import DailyPhotos from "./DailyPhotos"
 
 import axios from "axios";
 
 export default {
   name: 'MyDay',
+  components: {
+    DailyPhotos
+  },
   props: {
     myDay: Object,
     childId: String

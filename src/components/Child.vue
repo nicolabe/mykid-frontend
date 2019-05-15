@@ -2,7 +2,7 @@
   <div class="child-container">
     <h1 class="child-header">{{child.name}}</h1>
     <div class="child-info">
-      <div class="child-name">
+      <div class="child-image">
         <img v-bind:src="child.img" v-bind:alt="child.name" height="150" width="150">
       </div>
       <div class="info-box">
@@ -83,8 +83,12 @@ export default {
     }
   }
 
-  .child-name {
+  .child-image {
     flex: 1;
+
+    @media (max-width: $mobile-size) {
+      padding-bottom: 12px;
+    }
   }
 
   .info-box {
