@@ -7,7 +7,14 @@
       <h3 class="day-header">Dagen i dag {{today}}</h3>
       <a v-bind:class="{ disabled: isToday }" v-on:click="nextDay">&gt&gt</a>
     </div>
-    <div v-if="myDay.daily_messages && myDay.daily_messages.length > 0" class="events">
+     <div v-if="myDay.is_weekend">
+      Helg
+    </div>
+    <div v-else-if="myDay.is_holiday">
+      Helligdag/fridag
+    </div>
+    <div v-else>
+      <div v-if="myDay.daily_messages && myDay.daily_messages.length > 0" class="events">
       <p class="sleep">
         Sovet: {{sleepMessage}}
       </p>
@@ -18,6 +25,7 @@
       <p v-if="myDay.pickup.left_at">Hentet: {{myDay.pickup.left_at.substring(11,16)}}</p>
     </div>
     <DailyPhotos v-bind:photos="myDay.photos" />
+    </div>
   </div>
 </template>
 
