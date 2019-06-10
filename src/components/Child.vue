@@ -12,96 +12,111 @@
       </div>
     </div>
     <div class="child-myday" v-if="Object.keys(myDay).length > 0">
-      <MyDay v-on:changeDay="changeDay" v-bind:myDay="myDay" v-bind:childId="child.id" />
+      <MyDay v-on:changeDay="changeDay" v-bind:myDay="myDay" v-bind:childId="child.id"/>
     </div>
+    <Postits v-bind:postits="postits"/>
   </div>
 </template>
 
 <script>
-import axios from "axios"
-import MyDay from "./MyDay.vue"
-import { formatDate } from "../utils/helpers.js"
+import axios from "axios";
+import MyDay from "./MyDay.vue";
+import Postits from "./Postits.vue";
+import { formatDate } from "../utils/helpers.js";
 
 export default {
   components: {
-    MyDay
+    MyDay,
+    Postits
   },
   props: {
     child: Object
   },
   data: function() {
     return {
-      myDay: {}
-    }
+      myDay: {},
+      postits: []
+    };
   },
   methods: {
     changeDay(day) {
-      this.myDay = day
+      this.myDay = day;
+    },
+    async getMyDay() {
+      const date = new Date();
+      const { data } = await axios.get("/api/my_day", {
+        params: {
+          child_id: this.child.id,
+          date: date.toISOString().substring(0, 10)
+        }
+      });
+      this.myDay = data;
+    },
+    async getPostits() {
+      const { data } = await axios.get("/api/postits", {
+        params: {
+          child_id: this.child.id
+        }
+      });
+      this.postits = data.postits;
     }
   },
   computed: {
     formatBirthday() {
-      return formatDate(this.child.birthday)
+      return formatDate(this.child.birthday);
     }
   },
-  async created() {
-    const date = new Date()
-    const { data } = await axios.get("/api/my_day", {
-      params: {
-        child_id: this.child.id,
-        date: date.toISOString().substring(0, 10)
-    }})
-    this.myDay = data;
+  created() {
+    this.getMyDay();
+    this.getPostits();
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
-  .child-header {
-    font-weight: bold;
-    font-size: 26px;
-    padding-bottom: 16px;
-    text-transform: uppercase;
-  }
+.child-header {
+  font-weight: bold;
+  font-size: 26px;
+  padding-bottom: 16px;
+  text-transform: uppercase;
+}
 
-  .child-container {
-    margin: 20px;
-    padding: 20px;
-    display: flex;
+.child-container {
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.child-info {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding-bottom: 20px;
+
+  @media (max-width: $mobile-size) {
     flex-direction: column;
-
   }
+}
 
-  .child-info {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    padding-bottom: 20px;
+.child-image {
+  flex: 1;
 
-    @media (max-width: $mobile-size) {
-      flex-direction: column;
-    }
+  @media (max-width: $mobile-size) {
+    padding-bottom: 12px;
   }
+}
 
-  .child-image {
-    flex: 1;
-
-    @media (max-width: $mobile-size) {
-      padding-bottom: 12px;
-    }
-  }
-
-  .info-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: $primary-color;
-    color: $invert-text-color;
-    font-size: 24px;
-  }
-
+.info-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary-color;
+  color: $invert-text-color;
+  font-size: 24px;
+}
 </style>
 
 
